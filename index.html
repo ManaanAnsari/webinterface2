@@ -172,6 +172,38 @@ Base Order :- Ex500
           </div>
 
           <div class="form-group">
+            <label class="col-md-4 control-label" for="MinPricePerc"
+              >Min Price %</label
+            >
+            <div class="col-md-4">
+              <input
+                id="MinPricePerc"
+                name="MinPricePerc"
+                type="number"
+                placeholder="Min Price %"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="MaxPricePerc"
+              >Max Price %</label
+            >
+            <div class="col-md-4">
+              <input
+                id="MaxPricePerc"
+                name="MaxPricePerc"
+                type="number"
+                placeholder="Max Price"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
             <label class="col-md-4 control-label" for="BuyOrders">
               Buy Orders #
             </label>
@@ -328,8 +360,10 @@ Base Order :- Ex500
 
           data_to_send["asset"] = $("#assetselect").val();
           data_to_send["leverage"] = $("#leverageselect").val();
-          data_to_send["min_price"] = $("#MinPrice").val();
-          data_to_send["max_price"] = $("#MaxPrice").val();
+          data_to_send["min_price_val"] = $("#MinPrice").val();
+          data_to_send["max_price_val"] = $("#MaxPrice").val();
+          data_to_send["min_price_perc"] = $("#MinPricePerc").val();
+          data_to_send["max_price_perc"] = $("#MaxPricePerc").val();
           data_to_send["num_buy_orders"] = $("#BuyOrders").val();
           data_to_send["num_sell_orders"] = $("#SellOrders").val();
           data_to_send["min_dca_perc"] = $("#MinDCA").val();
