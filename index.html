@@ -324,7 +324,7 @@ Base Order :- Ex500
 
         function processDataToSend() {
           var data_to_send = {};
-          data_to_send["type"] = "automated_order";
+          data_to_send["web_data_type"] = "automated_order";
 
           data_to_send["asset"] = $("#assetselect").val();
           data_to_send["leverage"] = $("#leverageselect").val();
