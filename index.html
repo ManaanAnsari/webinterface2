@@ -102,8 +102,9 @@ Base Order :- Ex500
           </div>
 
           <!-- Select Basic for MARKET -->
-          <div class="form-group" style="display: none">
-            <label class="col-md-4 control-label" for="selectbasic">
+          <div class="form-group"></div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="assetselect">
               Asset
             </label>
             <div class="col-md-4">
@@ -115,7 +116,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="selectleverage">
               Leverage
             </label>
@@ -138,7 +139,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="MinPrice"
               >Min Price</label
             >
@@ -154,7 +155,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="MaxPrice"
               >Max Price</label
             >
@@ -170,7 +171,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="BuyOrders">
               Buy Orders #
             </label>
@@ -189,7 +190,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="SellOrders">
               Sell Orders #
             </label>
@@ -208,7 +209,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="MinDCA">Min DCA %</label>
             <div class="col-md-4">
               <input
@@ -222,7 +223,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="MinTP">Min TP %</label>
             <div class="col-md-4">
               <input
@@ -236,7 +237,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="TotalAmount"
               >Total Amount</label
             >
@@ -252,7 +253,7 @@ Base Order :- Ex500
             </div>
           </div>
 
-          <div class="form-group" style="display: none">
+          <div class="form-group">
             <label class="col-md-4 control-label" for="BaseAmount"
               >Base Order Amount</label
             >
@@ -270,9 +271,9 @@ Base Order :- Ex500
 
           <div class="form-group" style="margin-top: 50px"></div>
 
-          <!-- <button id="submit" name="submit" class="btn btn-primary">
+          <button id="submit" name="submit" class="btn btn-primary">
             submit
-          </button> -->
+          </button>
         </fieldset>
       </form>
     </div>
@@ -323,216 +324,59 @@ Base Order :- Ex500
 
         function processDataToSend() {
           var data_to_send = {};
-          var selectedOrderType = $(".custom-radio-button.active").data(
-            "market-type"
-          );
-          selectedOrderType = selectedOrderType.toLowerCase();
-          console.log(selectedOrderType);
-          if ($("#Amount").val() == "") {
-            alert("Please enter amount %");
-            return false;
+
+          data_to_send["asset"] = $("#assetselect").val();
+          data_to_send["leverage"] = $("#leverageselect").val();
+          data_to_send["min_price"] = $("#MinPrice").val();
+          data_to_send["max_price"] = $("#MaxPrice").val();
+          data_to_send["num_buy_orders"] = $("#BuyOrders").val();
+          data_to_send["num_sell_orders"] = $("#SellOrders").val();
+          data_to_send["min_dca"] = $("#MinDCA").val();
+          data_to_send["min_tp"] = $("#MinTP").val();
+          data_to_send["total_amount"] = $("#TotalAmount").val();
+          data_to_send["base_order_amount"] = $("#BaseAmount").val();
+          console.log(data_to_send);
+
+          // form validations
+          if (!data_to_send["asset"]) {
+            alert("Please select an asset");
+            return null;
           }
-          if ($("#Amount").val() < 0 || $("#Amount").val() > 100) {
-            alert("Please enter amount % between 0 to 100");
-            return false;
+          if (!data_to_send["leverage"]) {
+            alert("Please select a leverage");
+            return null;
           }
-          if ($("#Amount").val() == "value") {
-            if ($("#AmountVal").val() == "") {
-              alert("Please enter amount value");
-              return false;
-            }
-            if ($("#AmountVal").val() < 0) {
-              alert("Please enter amount value greater than 0");
-              return false;
-            }
+          if (!data_to_send["min_price"]) {
+            alert("Please enter a min price");
+            return null;
           }
-
-          if (selectedOrderType == "market") {
-            data_to_send = {
-              order_type: selectedOrderType,
-              asset: $("#assetselect").val(),
-              longshort: $("#longshortselect").val(),
-              amount: $("#Amount").val(),
-              amount_value: $("#AmountVal").val(),
-              leverage: $("#leverageselect").val(),
-              auto_tp_rebalance: $("#tpToggle").is(":checked"),
-              auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
-            };
-          } else if (selectedOrderType == "limit") {
-            if ($("#LimitPrice").val() == "") {
-              alert("Please enter limit price");
-              return false;
-            }
-            data_to_send = {
-              order_type: selectedOrderType,
-              asset: $("#assetselect").val(),
-              longshort: $("#longshortselect").val(),
-              amount: $("#Amount").val(),
-              amount_value: $("#AmountVal").val(),
-              limit_price: $("#LimitPrice").val(),
-              leverage: $("#leverageselect").val(),
-              auto_tp_rebalance: $("#tpToggle").is(":checked"),
-              auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
-            };
-          } else if (selectedOrderType == "ladder") {
-            if ($("#OrderNo").val() == "") {
-              alert("Please enter order no");
-              return false;
-            }
-            if ($("#StartPrice").val() == "") {
-              alert("Please enter start price");
-              return false;
-            }
-            if ($("#EndPrice").val() == "") {
-              alert("Please enter end price");
-              return false;
-            }
-
-            if ($("#OrderNo").val() < 0 || $("#OrderNo").val() > 10) {
-              alert("Please enter order no between 0 to 10");
-              return false;
-            }
-            if ($("#LadderType").val() == "current_price_perc") {
-              if ($("#StartPrice").val() < 0 || $("#StartPrice").val() > 100) {
-                alert("Please enter start price between 0 to 100");
-                return false;
-              }
-              if ($("#EndPrice").val() < 0 || $("#EndPrice").val() > 100) {
-                alert("Please enter end price between 0 to 100");
-                return false;
-              }
-            }
-
-            data_to_send = {
-              order_type: selectedOrderType,
-              asset: $("#assetselect").val(),
-              longshort: $("#longshortselect").val(),
-              amount: $("#Amount").val(),
-              amount_value: $("#AmountVal").val(),
-              start_price: $("#StartPrice").val(),
-              end_price: $("#EndPrice").val(),
-              order_no: $("#OrderNo").val(),
-              leverage: $("#leverageselect").val(),
-              auto_tp_rebalance: $("#tpToggle").is(":checked"),
-              auto_sl_rebalance: $("#stopLossToggle").is(":checked"),
-              ladder_type: $("#LadderType").val(),
-            };
-          } else if (selectedOrderType == "tp") {
-            data_to_send = {
-              order_type: selectedOrderType,
-              asset: $("#assetselect").val(),
-              longshort: $("#longshortselect").val(),
-            };
-            data_to_send["tp_data"] = {};
-            if ($("#tpOrderType").val() == "normal") {
-              if ($("#tpType").val() == "entry_perc") {
-                if ($("#tpValue").val() < 0 || $("#tpValue").val() > 100) {
-                  alert("Please enter tp value between 0 to 100");
-                  return false;
-                }
-              }
-
-              if ($("#tpValue").val() == "") {
-                alert("Please enter tp value");
-                return false;
-              }
-
-              if ($("#tpValue").val() < 0) {
-                alert("Please enter tp value greater than 0");
-                return false;
-              }
-              if ($("#tpType").val() == "entry_perc") {
-                data_to_send["tp_data"]["type"] = "normal";
-                data_to_send["tp_data"]["entry_perc"] = $("#tpValue").val();
-              } else {
-                data_to_send["tp_data"]["type"] = "normal";
-                data_to_send["tp_data"]["fixed_price"] = $("#tpValue").val();
-              }
-            } else if ($("#tpOrderType").val() == "ladder") {
-              if ($("#tpType").val() == "entry_perc") {
-                if (
-                  $("#tpValueStart").val() < 0 ||
-                  $("#tpValueStart").val() > 100
-                ) {
-                  alert("Please enter tp value between 0 to 100");
-                  return false;
-                }
-                if (
-                  $("#tpValueEnd").val() < 0 ||
-                  $("#tpValueEnd").val() > 100
-                ) {
-                  alert("Please enter tp value between 0 to 100");
-                  return false;
-                }
-              }
-
-              if ($("#tpValueStart").val() == "") {
-                alert("Please enter tp value");
-                return false;
-              }
-              if ($("#tpValueEnd").val() == "") {
-                alert("Please enter tp value");
-                return false;
-              }
-
-              if ($("#tpValueStart").val() < 0) {
-                alert("Please enter tp value greater than 0");
-                return false;
-              }
-              if ($("#tpValueEnd").val() < 0) {
-                alert("Please enter tp value greater than 0");
-                return false;
-              }
-
-              if ($("#tpType").val() == "entry_perc") {
-                data_to_send["tp_data"]["type"] = "ladder";
-                data_to_send["tp_data"]["start_perc"] =
-                  $("#tpValueStart").val();
-                data_to_send["tp_data"]["end_perc"] = $("#tpValueEnd").val();
-                data_to_send["tp_data"]["order_num"] = $("#tpOrderNum").val();
-              } else {
-                data_to_send["tp_data"]["type"] = "ladder";
-                data_to_send["tp_data"]["start_price"] =
-                  $("#tpValueStart").val();
-                data_to_send["tp_data"]["end_price"] = $("#tpValueEnd").val();
-                data_to_send["tp_data"]["order_num"] = $("#tpOrderNum").val();
-              }
-            }
-          } else if (selectedOrderType == "sl") {
-            data_to_send = {
-              order_type: selectedOrderType,
-              asset: $("#assetselect").val(),
-              longshort: $("#longshortselect").val(),
-            };
-            data_to_send["stoploss_data"] = {};
-            if ($("#stopLossType").val() == "entry_perc") {
-              if (
-                $("#stopLossValue").val() < 0 ||
-                $("#stopLossValue").val() > 100
-              ) {
-                alert("Please enter stop loss value between 0 to 100");
-                return false;
-              }
-            }
-
-            if ($("#stopLossValue").val() == "") {
-              alert("Please enter stop loss value");
-              return false;
-            }
-
-            if ($("#stopLossValue").val() < 0) {
-              alert("Please enter stop loss value greater than 0");
-              return false;
-            }
-            if ($("#stopLossType").val() == "entry_perc") {
-              data_to_send["stoploss_data"]["entry_perc"] =
-                $("#stopLossValue").val();
-            } else {
-              data_to_send["stoploss_data"]["fixed_price"] =
-                $("#stopLossValue").val();
-            }
-          } else {
-            alert("Please select order type");
+          if (!data_to_send["max_price"]) {
+            alert("Please enter a max price");
+            return null;
+          }
+          if (!data_to_send["num_buy_orders"]) {
+            alert("Please select a number of buy orders");
+            return null;
+          }
+          if (!data_to_send["num_sell_orders"]) {
+            alert("Please select a number of sell orders");
+            return null;
+          }
+          if (data_to_send["min_dca"] < 0 || data_to_send["min_dca"] > 100) {
+            alert("Please enter a min dca between 0 and 100");
+            return null;
+          }
+          if (data_to_send["min_tp"] < 0 || data_to_send["min_tp"] > 100) {
+            alert("Please enter a min tp between 0 and 100");
+            return null;
+          }
+          if (!data_to_send["total_amount"]) {
+            alert("Please enter a total amount");
+            return null;
+          }
+          if (!data_to_send["base_order_amount"]) {
+            alert("Please enter a base order amount");
+            return null;
           }
 
           return data_to_send;
@@ -545,58 +389,6 @@ Base Order :- Ex500
           // This function will be executed when the Submit button is clicked
           alert("Submit button clicked!"); // You can replace this with your desired action
         });
-
-        $(".amount-group button").click(function () {
-          var buttonValue = parseInt($(this).val()); // Get the button value (e.g., 5, 10, 15, ...)
-          $("#Amount").val(buttonValue);
-        });
-
-        // Handle Stop Loss Toggle
-        $("#stopLossToggle").change(function () {
-          console.log($("#stopLossToggle").is(":checked"));
-          /*
-          $("#stopLossValue").val(null);
-          if (this.checked) {
-            $(".stopLossField").show();
-            console.log("Stop Loss toggle enabled");
-          } else {
-            $(".stopLossField").hide();
-            console.log("Stop Loss toggle disabled");
-          }
-          */
-        });
-        // Handle TP Toggle
-        $("#tpToggle").change(function () {
-          console.log($("#tpToggle").is(":checked"));
-          /*
-          $("#tpValue").val(null);
-          if (this.checked) {
-            $(".tpField").show();
-            console.log("TP toggle enabled");
-          } else {
-            $(".tpField").hide();
-            console.log("TP toggle disabled");
-          }
-          */
-        });
-        $("#Amount").change(function () {
-          if ($("#Amount").val() == "value") {
-            $(".amount_value").show();
-          } else {
-            $(".amount_value").hide();
-          }
-        });
-        $("#tpOrderType").change(function () {
-          if ($("#tpOrderType").val() == "ladder") {
-            $(".tp-ladder").show();
-            $(".tp-normal").hide();
-          } else {
-            $(".tp-ladder").hide();
-            $(".tp-normal").show();
-          }
-        });
-
-        $(".amount_value").hide();
       });
     </script>
   </body>
