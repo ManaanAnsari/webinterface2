@@ -304,6 +304,22 @@ Base Order :- Ex500
           </div>
 
           <div class="form-group">
+            <label class="col-md-4 control-label" for="TotalAmountPerc"
+              >Total Amount %</label
+            >
+            <div class="col-md-4">
+              <input
+                id="TotalAmountPerc"
+                name="TotalAmountPerc"
+                type="number"
+                placeholder="%"
+                class="form-control input-md"
+                required=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
             <label class="col-md-4 control-label" for="BaseAmount"
               >Base Order Amount</label
             >
@@ -387,6 +403,7 @@ Base Order :- Ex500
           data_to_send["min_dca_perc"] = $("#MinDCA").val();
           data_to_send["min_tp_perc"] = $("#MinTP").val();
           data_to_send["total_amount"] = $("#TotalAmount").val();
+          data_to_send["total_amount_perc"] = $("#TotalAmountPerc").val();
           data_to_send["base_order_amount"] = $("#BaseAmount").val();
           console.log(data_to_send);
 
@@ -426,6 +443,15 @@ Base Order :- Ex500
           if (!data_to_send["total_amount"]) {
             alert("Please enter a total amount");
             return null;
+          }
+          if (data_to_send["total_amount_perc"]) {
+            if (
+              data_to_send["total_amount_perc"] < 0 ||
+              data_to_send["total_amount_perc"] > 100
+            ) {
+              alert("Please enter a total amount % between 0 and 100");
+              return null;
+            }
           }
           if (!data_to_send["base_order_amount"]) {
             alert("Please enter a base order amount");
